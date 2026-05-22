@@ -56,16 +56,50 @@ model: opus
 ### 5단계 — 사용자에게 출제
 - 파일에 저장한 퀴즈를 채팅에도 그대로 보여준다.
 - **정답은 처음에 보여주지 않는다.** `<details>` 로 접어두거나, "답 확인하고 싶으면 알려달라" 고 안내.
-- 끝에 한 줄: `_📝 퀴즈 저장: quizzes/YYYYMMDD_quiz.md_`
+- 끝에 한 줄: `_📝 퀴즈 저장: quizzes/YYYYMMDD_quiz.md · ✅ committed_`
+
+### 6단계 — 자동 커밋 (필수)
+퀴즈 파일과 이력 파일을 저장한 **직후** 반드시 git 커밋을 만든다.
+
+**커밋 전 remote 검증 (매번 필수)**
+```bash
+git remote get-url origin
+```
+기대값: `git@github.com:ioshe/flutter-study-by-claude.git`
+- 다르면 즉시 멈추고 사용자에게 알린다. 임의로 remote 변경 금지.
+
+1. 변경된 파일만 `git add`. 절대 `git add -A` 금지.
+   ```bash
+   git add quizzes/YYYYMMDD_quiz.md quizzes/history/asked_questions.md
+   ```
+2. 커밋 메시지 형식 (출제):
+   ```
+   quiz(add): YYYYMMDD — <범위 키워드 1~3개>
+   ```
+   예: `quiz(add): 20260522 — null safety, Future, async/await`
+3. HEREDOC 사용:
+   ```bash
+   git commit -m "$(cat <<'EOF'
+   quiz(add): YYYYMMDD — 키워드
+
+   Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+   EOF
+   )"
+   ```
 
 ---
 
 ## 채점 모드
 사용자가 답을 제출하면:
-1. 같은 파일에 `## 채점` 섹션을 append.
+1. 같은 파일에 `## 채점 (HH:MM)` 섹션을 append.
 2. 문항별로 ✅/❌ 와 짧은 코멘트.
 3. 틀린 문제는 **왜 틀렸는지** 와 **언제 다시 복습하면 좋은지** 안내.
 4. 점수 요약(예: 3/5) 과 한 줄 총평.
+5. **채점 결과도 즉시 커밋**한다. 커밋 메시지 형식:
+   ```
+   quiz(grade): YYYYMMDD — N/M 점 · <한줄총평>
+   ```
+   예: `quiz(grade): 20260522 — 4/5 · Future 에러 처리 약함`
 
 ---
 

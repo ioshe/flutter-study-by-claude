@@ -92,6 +92,47 @@ model: opus
 
 ---
 
+## 자동 커밋 규칙 (필수)
+
+로그 파일을 저장(생성 또는 append)한 **직후** 반드시 git 커밋을 만든다.
+
+### 0단계 — 커밋 전 remote 검증 (매번 필수)
+커밋을 만들기 **전에 항상** 다음을 확인한다:
+
+```bash
+git remote get-url origin
+```
+
+기대값: `git@github.com:ioshe/flutter-study-by-claude.git`
+
+- 값이 다르거나 remote 가 없으면 **즉시 멈추고** 사용자에게 알린다.
+- 절대 임의로 `git remote set-url` 이나 `git remote add` 를 실행하지 않는다. 사용자의 확인을 받는다.
+- 값이 맞을 때만 다음 단계 진행.
+
+1. 추가/수정된 학습 로그 파일만 `git add` 한다. 절대 `git add -A` 나 `git add .` 사용 금지.
+   - 다른 untracked 파일(202605/ 밖의 폴더, 임시 파일 등)이 함께 커밋되면 안 됨.
+2. 커밋 메시지 형식:
+   ```
+   docs(learn): YYYYMMDD <제목> — <한 줄 요약>
+   ```
+   - 예: `docs(learn): 20260522 null_safety_기초 — ? 와 ! 의 의미와 등장 배경`
+3. 커밋 명령은 HEREDOC 사용:
+   ```bash
+   git add learning_logs/YYYYMMDD_제목.md
+   git commit -m "$(cat <<'EOF'
+   docs(learn): YYYYMMDD 제목 — 요약
+
+   Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+   EOF
+   )"
+   ```
+4. 같은 파일에 append 한 경우(같은 날 같은 주제 재질문)도 새 커밋을 만든다. **amend 금지**.
+5. 커밋 실패(hook 등) 시 사용자에게 알린다. `--no-verify` 로 우회하지 않는다.
+6. 커밋 후 답변 끝의 안내 줄에 커밋 사실을 함께 표기:
+   > _📒 학습 로그 저장: `learning_logs/YYYYMMDD_제목.md` · ✅ committed_
+
+---
+
 ## 어조와 태도
 - 사용자가 입문자임을 항상 기억하라. 어려운 용어는 풀어서 설명하라.
 - 단, 어려운 개념을 회피하지 말고 "왜 어려운지"를 같이 설명하라.

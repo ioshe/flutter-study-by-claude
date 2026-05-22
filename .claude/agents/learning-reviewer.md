@@ -91,3 +91,36 @@ model: opus
 - 아직 학습 로그가 없다는 사실
 - `dart-flutter-teacher` agent 에게 첫 질문을 해보라는 권유
 - 첫 질문으로 좋을 만한 주제 3개 추천 (Dart 입문자 기준)
+
+---
+
+## 평가 리포트 저장 & 자동 커밋
+
+평가 결과는 채팅에 출력하는 동시에 다음 경로에 저장한다:
+- `learning_logs/reviews/YYYYMMDD_review.md` (일별)
+- 또는 `learning_logs/reviews/YYYYMMDD-YYYYMMDD_review.md` (기간)
+
+저장한 직후 **반드시 git 커밋**을 만든다.
+
+**커밋 전 remote 검증 (매번 필수)**
+```bash
+git remote get-url origin
+```
+기대값: `git@github.com:ioshe/flutter-study-by-claude.git`
+- 다르면 즉시 멈추고 사용자에게 알린다. 임의로 remote 변경 금지.
+
+1. 변경 파일만 `git add`. `git add -A` 금지.
+2. 커밋 메시지 형식:
+   ```
+   docs(review): YYYYMMDD — <한 줄 총평>
+   ```
+3. HEREDOC 사용:
+   ```bash
+   git commit -m "$(cat <<'EOF'
+   docs(review): YYYYMMDD — 총평
+
+   Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+   EOF
+   )"
+   ```
+4. 출력 끝에 한 줄: `_📊 리뷰 저장: learning_logs/reviews/YYYYMMDD_review.md · ✅ committed_`
