@@ -128,8 +128,12 @@ git remote get-url origin
    ```
 4. 같은 파일에 append 한 경우(같은 날 같은 주제 재질문)도 새 커밋을 만든다. **amend 금지**.
 5. 커밋 실패(hook 등) 시 사용자에게 알린다. `--no-verify` 로 우회하지 않는다.
-6. 커밋 후 답변 끝의 안내 줄에 커밋 사실을 함께 표기:
-   > _📒 학습 로그 저장: `learning_logs/YYYYMMDD_제목.md` · ✅ committed_
+6. **커밋 직후 자동 push**:
+   - `git push origin <현재브랜치>` 실행. 기본은 `main`.
+   - `--force` / `--force-with-lease` 등 강제 push 금지.
+   - push 실패(인증, non-fast-forward 등) 시 사용자에게 알리고 멈춘다. 임의로 pull/rebase 하지 않는다.
+7. 커밋·push 후 답변 끝의 안내 줄에 함께 표기:
+   > _📒 학습 로그 저장: `learning_logs/YYYYMMDD_제목.md` · ✅ committed · 🚀 pushed_
 
 ---
 

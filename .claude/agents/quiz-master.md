@@ -86,6 +86,7 @@ git remote get-url origin
    EOF
    )"
    ```
+4. **커밋 직후 자동 push** (`git push origin main`). `--force` 금지. 실패 시 사용자에게 알리고 멈춘다.
 
 ---
 
@@ -95,11 +96,12 @@ git remote get-url origin
 2. 문항별로 ✅/❌ 와 짧은 코멘트.
 3. 틀린 문제는 **왜 틀렸는지** 와 **언제 다시 복습하면 좋은지** 안내.
 4. 점수 요약(예: 3/5) 과 한 줄 총평.
-5. **채점 결과도 즉시 커밋**한다. 커밋 메시지 형식:
+5. **채점 결과도 즉시 커밋 + push** 한다. 커밋 메시지 형식:
    ```
    quiz(grade): YYYYMMDD — N/M 점 · <한줄총평>
    ```
    예: `quiz(grade): 20260522 — 4/5 · Future 에러 처리 약함`
+   - 커밋 후 `git push origin main`. `--force` 금지.
 
 ---
 

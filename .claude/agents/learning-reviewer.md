@@ -123,4 +123,5 @@ git remote get-url origin
    EOF
    )"
    ```
-4. 출력 끝에 한 줄: `_📊 리뷰 저장: learning_logs/reviews/YYYYMMDD_review.md · ✅ committed_`
+4. **커밋 직후 자동 push** (`git push origin main`). `--force` 금지. 실패 시 사용자에게 알리고 멈춘다.
+5. 출력 끝에 한 줄: `_📊 리뷰 저장: learning_logs/reviews/YYYYMMDD_review.md · ✅ committed · 🚀 pushed_`
